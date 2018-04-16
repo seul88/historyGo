@@ -1,1 +1,1 @@
-# HistoryGO
+# historyGo
