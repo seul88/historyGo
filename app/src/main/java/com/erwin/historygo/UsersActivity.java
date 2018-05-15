@@ -19,13 +19,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import com.erwin.historygo.api.User;
+import com.erwin.historygo.api.UserComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class UsersActivity extends AppCompatActivity {
 
 
     Button btnGetRanking;
     TextView tvRankingList;
     RequestQueue requestQueue;
-
+    List<User> usersList;
     String baseUrl =  "https://c72ea029.ngrok.io/users/all";
     String url;
 
@@ -33,7 +41,7 @@ public class UsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_view);
-
+        this.usersList = new ArrayList<>();
         this.btnGetRanking = (Button) findViewById(R.id.btn_get_rank);
         this.tvRankingList = (TextView) findViewById(R.id.tv_rank_list);
         this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
@@ -43,10 +51,10 @@ public class UsersActivity extends AppCompatActivity {
     }
 
 
-    private void addToRankingList(String repoName, String lastUpdated) {
+    private void addToRankingList(String user, String points) {
 
         /*   cast String -> int           */
-        String strRow = repoName + " / " + lastUpdated;
+        String strRow = user + " / " + points;
         String currentText = tvRankingList.getText().toString();
         this.tvRankingList.setText(currentText + "\n\n" + strRow);
     }
@@ -59,7 +67,7 @@ public class UsersActivity extends AppCompatActivity {
     private void getRanking() {
 
         this.url = this.baseUrl;
-
+        this.tvRankingList.setText(null);
         //  https://developer.android.com/training/volley/index.html
 
         JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
@@ -68,13 +76,16 @@ public class UsersActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         if (response.length() > 0) {
-
+                                    usersList.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject jsonObj = response.getJSONObject(i);
                                     String name = jsonObj.get("name").toString();
                                     String points = jsonObj.get("points").toString();
-                                    addToRankingList(name, points);
+                                    int pointsInt =  Integer.parseInt(points);
+                                    usersList.add(new User(name, pointsInt));
+
+                                    // addToRankingList(name, points);
                                 } catch (JSONException e) {
                                     Log.e("Volley", "Invalid JSON Object.");
                                 }
@@ -99,7 +110,14 @@ public class UsersActivity extends AppCompatActivity {
 
     public void getRankingClicked(View v) {
 
+
         getRanking();
-        // sort ranking
+        Collections.sort(usersList, new UserComparator());
+        for (User i : usersList){
+            addToRankingList(i.getName(),Integer.toString(i.getPoints()));
+        }
     }
 }
+
+
+// https://www.londonappdeveloper.com/consuming-a-json-rest-api-in-android/
