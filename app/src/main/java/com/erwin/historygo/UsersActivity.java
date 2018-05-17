@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -31,7 +36,7 @@ public class UsersActivity extends AppCompatActivity {
 
 
     Button btnGetRanking;
-    TextView tvRankingList;
+    ListView tvRankingList;
     RequestQueue requestQueue;
     List<User> usersList;
     String baseUrl = "https://7aaae8f1.ngrok.io";
@@ -43,17 +48,17 @@ public class UsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users_view);
         this.usersList = new ArrayList<>();
         this.btnGetRanking = (Button) findViewById(R.id.btn_get_rank);
-        this.tvRankingList = (TextView) findViewById(R.id.tv_rank_list);
-        this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
+        this.tvRankingList = (ListView) findViewById(R.id.tv_rank_list);
+       // this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
 
         requestQueue = Volley.newRequestQueue(this);
 
     }
 
-
+/*
     private void addToRankingList(String user, String points) {
 
-        /*   cast String -> int           */
+        //  cast String -> int
         String strRow = user + "  |  " + points;
         String currentText = tvRankingList.getText().toString();
         this.tvRankingList.setText(currentText + "\n\n" + strRow);
@@ -61,14 +66,14 @@ public class UsersActivity extends AppCompatActivity {
     }
 
     private void setRankingListText(String str) {
-        this.tvRankingList.setText(str);
+        this.tvRankingList.
     }
-
+*/
 
     private void getRanking() {
 
         this.url = this.baseUrl + "/users/all";
-        this.tvRankingList.setText(null);
+     //   this.tvRankingList.setText(null);
 
         //  https://developer.android.com/training/volley/index.html
 
@@ -93,7 +98,7 @@ public class UsersActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            setRankingListText("No users found.");
+                           //  setRankingListText("No users found.");
                         }
 
                     }
@@ -102,7 +107,7 @@ public class UsersActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        setRankingListText("Error while calling REST API");
+                      //  setRankingListText("Error while calling REST API");
                         Log.e("Volley", error.toString());
                     }
                 }
@@ -115,9 +120,24 @@ public class UsersActivity extends AppCompatActivity {
 
         getRanking();
         Collections.sort(usersList, new UserComparator());
+        List<String> usersToString = new ArrayList<String>();
+
         for (User i : usersList){
-            addToRankingList(i.getName(),Integer.toString(i.getPoints()));
+            String user = i.getName();
+            String points = Integer.toString(i.getPoints());
+            usersToString.add(user + "  |  " + points);
         }
+
+        ListAdapter adapter = new ArrayAdapter<String>(this, R.layout.row, R.id.textView1, usersToString);
+        tvRankingList.setAdapter(adapter);
+        tvRankingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
+
+            Toast.makeText(UsersActivity.this, selectedUser, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 
