@@ -34,7 +34,7 @@ public class UsersActivity extends AppCompatActivity {
     TextView tvRankingList;
     RequestQueue requestQueue;
     List<User> usersList;
-    String baseUrl =  "https://c72ea029.ngrok.io/users/all";
+    String baseUrl = "https://7aaae8f1.ngrok.io";
     String url;
 
     @Override
@@ -54,9 +54,10 @@ public class UsersActivity extends AppCompatActivity {
     private void addToRankingList(String user, String points) {
 
         /*   cast String -> int           */
-        String strRow = user + " / " + points;
+        String strRow = user + "  |  " + points;
         String currentText = tvRankingList.getText().toString();
         this.tvRankingList.setText(currentText + "\n\n" + strRow);
+
     }
 
     private void setRankingListText(String str) {
@@ -66,8 +67,9 @@ public class UsersActivity extends AppCompatActivity {
 
     private void getRanking() {
 
-        this.url = this.baseUrl;
+        this.url = this.baseUrl + "/users/all";
         this.tvRankingList.setText(null);
+
         //  https://developer.android.com/training/volley/index.html
 
         JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
@@ -119,5 +121,5 @@ public class UsersActivity extends AppCompatActivity {
     }
 }
 
-
+// https://developer.android.com/training/volley/index.html
 // https://www.londonappdeveloper.com/consuming-a-json-rest-api-in-android/
