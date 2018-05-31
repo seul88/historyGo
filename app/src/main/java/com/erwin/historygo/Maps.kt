@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.GroundOverlay
 
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickListener {
+class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickListener {
 
     override fun onPolygonClick(p0: Polygon?) {
         Toast.makeText(this, "Kliknięto w obszar gry! " + p0.toString(),

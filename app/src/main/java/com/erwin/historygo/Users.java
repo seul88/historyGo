@@ -3,7 +3,6 @@ package com.erwin.historygo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,17 +30,16 @@ import com.erwin.historygo.api.UserRepository;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class UsersActivity extends AppCompatActivity {
+public class Users extends AppCompatActivity {
 
 
     Button btnGetRanking;
     ListView tvRankingList;
     RequestQueue requestQueue;
     List<User> usersList;
-    String baseUrl = "https://f642940a.ngrok.io";
+    String baseUrl = "https://7e76dcd2.ngrok.io";
     String url;
 
     @Override
@@ -121,11 +118,8 @@ public class UsersActivity extends AppCompatActivity {
 
     public void getRankingClicked(View v) {
 
-        UserAsyncTask task = new UserAsyncTask();
-        task.execute();
 
-
-       // getRanking();
+       getRanking();
 
 
         Collections.sort(usersList, new UserComparator());
@@ -144,16 +138,18 @@ public class UsersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
 
-            Toast.makeText(UsersActivity.this, selectedUser, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Users.this, selectedUser, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private class UserAsyncTask extends AsyncTask<URL,Void,UserRepository>{
+    /*
+    private class JSONTask extends AsyncTask<URL,String,String>{
 
         @Override
-        protected UserRepository doInBackground(URL... urls) {
-            String address = "https://5007a819.ngrok.io/users/all";
+        protected String doInBackground(URL... urls) {
+
+
             final UserRepository repository = new UserRepository();
             JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, address,
                     new Response.Listener<JSONArray>() {
@@ -202,7 +198,7 @@ public class UsersActivity extends AppCompatActivity {
         }
 
     }
-
+*/
 
     }
 

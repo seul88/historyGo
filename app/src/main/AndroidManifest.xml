@@ -32,26 +32,26 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
+            android:name=".Maps"
+            android:label="Map"
+            android:parentActivityName=".Main"></activity>
         <activity
-            android:name=".UsersActivity"
+            android:name=".Users"
             android:label="Users"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"></activity>
-
-        <activity android:name=".MainActivity">
-
+            android:parentActivityName=".Main"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".Places"
+                android:label="Places"
+            android:parentActivityName=".Main"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

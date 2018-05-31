@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class Main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +29,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.activity_maps:
-                Intent intent1 = new Intent(this, MapsActivity.class);
+                Intent intent1 = new Intent(this, Maps.class);
                 this.startActivity(intent1);
                 return true;
             case R.id.activity_users_view:
-                Intent intent2 = new Intent(this, UsersActivity.class);
+                Intent intent2 = new Intent(this, Users.class);
                 this.startActivity(intent2);
+                return true;
+
+            case R.id.activity_places:
+                Intent intent3 = new Intent(this, Places.class);
+                this.startActivity(intent3);
                 return true;
 
             default:
