@@ -3,6 +3,8 @@ package com.erwin.historygo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -29,6 +31,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygo
                 Toast.LENGTH_SHORT).show();
     }
 
+
+
     private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +42,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygo
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+
+
     }
     
     override fun onMapReady(googleMap: GoogleMap) {
@@ -94,7 +102,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygo
 
 
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(zamek))
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(zamek))
 
 
 
@@ -129,7 +137,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygo
 
         // GroundOverlay - limitation of picture size to 1 mb
 
-
+/*
         val newarkBounds = LatLngBounds(
                 LatLng(52.377924, 16.892746),       // South west corner
                 LatLng(52.425314, 16.961760))       // North east corner
@@ -139,7 +147,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygo
                 .positionFromBounds(newarkBounds)
                 .transparency(0.4.toFloat())
          mMap.addGroundOverlay(newarkMap)
-
+*/
     }
 
 

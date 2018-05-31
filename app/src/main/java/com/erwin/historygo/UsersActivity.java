@@ -1,5 +1,6 @@
 package com.erwin.historygo;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -26,7 +27,9 @@ import org.json.JSONException;
 
 import com.erwin.historygo.api.User;
 import com.erwin.historygo.api.UserComparator;
+import com.erwin.historygo.api.UserRepository;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,7 +42,7 @@ public class UsersActivity extends AppCompatActivity {
     ListView tvRankingList;
     RequestQueue requestQueue;
     List<User> usersList;
-    String baseUrl = "https://7aaae8f1.ngrok.io";
+    String baseUrl = "https://f642940a.ngrok.io";
     String url;
 
     @Override
@@ -52,7 +55,7 @@ public class UsersActivity extends AppCompatActivity {
        // this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
 
         requestQueue = Volley.newRequestQueue(this);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 /*
@@ -115,10 +118,16 @@ public class UsersActivity extends AppCompatActivity {
         requestQueue.add(arrReq);
     }
 
+
     public void getRankingClicked(View v) {
 
+        UserAsyncTask task = new UserAsyncTask();
+        task.execute();
 
-        getRanking();
+
+       // getRanking();
+
+
         Collections.sort(usersList, new UserComparator());
         List<String> usersToString = new ArrayList<String>();
 
@@ -139,7 +148,63 @@ public class UsersActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+    private class UserAsyncTask extends AsyncTask<URL,Void,UserRepository>{
+
+        @Override
+        protected UserRepository doInBackground(URL... urls) {
+            String address = "https://5007a819.ngrok.io/users/all";
+            final UserRepository repository = new UserRepository();
+            JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, address,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+
+                            if (response.length() > 0) {
+                                repository.clearList();
+                                for (int i = 0; i < response.length(); i++) {
+                                    try {
+                                        JSONObject jsonObj = response.getJSONObject(i);
+                                        String name = jsonObj.get("name").toString();
+                                        String points = jsonObj.get("points").toString();
+                                        int pointsInt =  Integer.parseInt(points);
+                                        User user = new User(name, pointsInt);
+                                        repository.addUser(user);
+
+                                    } catch (JSONException e) {
+                                        Log.e("Volley", "Invalid JSON Object.");
+                                    }
+
+
+                                }
+
+                            }
+
+
+                            else {
+                                //  setRankingListText("No users found.");
+                            }
+
+                        }
+                    },
+
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //  setRankingListText("Error while calling REST API");
+                            Log.e("Volley", error.toString());
+                        }
+                    }
+            );
+            requestQueue.add(arrReq);
+        return repository;
+        }
+
+    }
+
+
+    }
 
 // https://developer.android.com/training/volley/index.html
 // https://www.londonappdeveloper.com/consuming-a-json-rest-api-in-android/
