@@ -52,15 +52,19 @@
             android:label="Places"
             android:parentActivityName=".Main"
             android:screenOrientation="portrait" />
-        <activity android:name=".Politechnika"
+        <activity
+            android:name=".Politechnika"
             android:parentActivityName=".Main"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Ratusz"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ratusz"
             android:parentActivityName=".Main"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Malta"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Malta"
             android:parentActivityName=".Main"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".PlaceManager"></activity>
     </application>
 
 </manifest>
