@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Main">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="271dp"
+        app:srcCompat="@drawable/old_poznan"
+        tools:layout_editor_absoluteY="8dp" />
 </android.support.constraint.ConstraintLayout>

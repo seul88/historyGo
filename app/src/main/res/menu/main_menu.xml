@@ -18,8 +18,19 @@
         android:title="Places"
         app:showAsAction="never" />
 
+    <item android:id="@+id/activity_ratusz"
+        android:title="Ratusz"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/activity_politechnika"
+        android:title="Politechnika"
+        app:showAsAction="never" />
+
     <item android:id="@+id/activity_malta"
         android:title="Malta"
         app:showAsAction="never" />
+
+
+
 
 </menu>
