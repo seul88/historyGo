@@ -2,21 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".Places">
+    tools:context=".Ratusz">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="302dp"
-        android:layout_height="157dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/placeName"
-        app:srcCompat="@drawable/zamek" />
+        app:srcCompat="@drawable/ratusz"
+        tools:layout_editor_absoluteX="5dp" />
 
     <TextView
         android:id="@+id/placeName"
@@ -25,7 +23,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center|top"
-        android:text="Zamek"
+        android:text="Ratusz"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,34 +32,32 @@
 
     <TextView
         android:id="@+id/placeYear"
-        android:layout_width="35dp"
-        android:layout_height="18dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginTop="4dp"
-        android:text="1905"
+        android:layout_width="55dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="80dp"
+        android:text="1300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placePoints" />
 
     <TextView
         android:id="@+id/placePoints"
-        android:layout_width="25dp"
-        android:layout_height="22dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginTop="8dp"
-        android:text="20"
+        android:layout_width="22dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="112dp"
+        android:text="30"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        tools:layout_editor_absoluteY="259dp" />
 
     <TextView
         android:id="@+id/placeDescription"
-        android:layout_width="321dp"
+        android:layout_width="331dp"
         android:layout_height="170dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
 
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Jest to jeden z najmłodszych zamków w Europie. Zamek został wzniesiony na planie nieregularnego wieloboku w stylu neoromańskim, uważanym przez cesarza za najbardziej germański i reprezentujący świetność Świętego Cesarstwa."
+        android:text="Ratusz w Poznaniu po raz pierwszy pojawił się w dokumentach w 1313. W 1536 w mieście wybuchł wielki pożar, który strawił również ratusz. W 1550 Rada Miejska podpisała umowę na gruntowną przebudowę, połączoną z rozbudową ratusza, z tesyńskim architektem Janem Baptystą di Quadro z Lugano."
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

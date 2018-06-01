@@ -4,14 +4,14 @@ import java.util.List;
 
 public class UserRepository {
 
-    private List<User> usersList;
+    private List<UserModel> usersList;
 
 
-    public List<User> getUsers(){
+    public List<UserModel> getUsers(){
         return usersList;
     }
 
-    public void addUser(User u){
+    public void addUser(UserModel u){
         this.usersList.add(u);
     }
 

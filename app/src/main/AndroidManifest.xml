@@ -34,7 +34,7 @@
         <activity
             android:name=".Maps"
             android:label="Map"
-            android:parentActivityName=".Main"></activity>
+            android:parentActivityName=".Main" />
         <activity
             android:name=".Users"
             android:label="Users"
@@ -47,11 +47,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Places"
-                android:label="Places"
+        <activity
+            android:name=".Places"
+            android:label="Places"
             android:parentActivityName=".Main"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Politechnika" />
+        <activity android:name=".Ratusz" />
+        <activity android:name=".Malta"></activity>
     </application>
 
 </manifest>

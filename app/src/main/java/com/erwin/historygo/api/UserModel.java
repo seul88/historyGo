@@ -2,7 +2,7 @@ package com.erwin.historygo.api;
 
 import android.support.annotation.NonNull;
 
-public class User {
+public class UserModel {
     private String name;
     private int points;
 
@@ -22,12 +22,12 @@ public class User {
         this.points = points;
     }
 
-    public User(String name, int points) {
+    public UserModel(String name, int points) {
         this.name = name;
         this.points = points;
     }
 
-    public User() {
+    public UserModel() {
     }
 
 

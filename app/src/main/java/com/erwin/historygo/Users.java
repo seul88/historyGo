@@ -1,5 +1,6 @@
 package com.erwin.historygo;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +24,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
-import com.erwin.historygo.api.User;
+import com.erwin.historygo.api.UserModel;
 import com.erwin.historygo.api.UserComparator;
-import com.erwin.historygo.api.UserRepository;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +42,8 @@ public class Users extends AppCompatActivity {
     Button btnGetRanking;
     ListView tvRankingList;
     RequestQueue requestQueue;
-    List<User> usersList;
-    String baseUrl = "https://7e76dcd2.ngrok.io";
+    List<UserModel> usersList;
+    String baseUrl = "https://dc3d2d22.ngrok.io";
     String url;
 
     @Override
@@ -49,31 +53,18 @@ public class Users extends AppCompatActivity {
         this.usersList = new ArrayList<>();
         this.btnGetRanking = (Button) findViewById(R.id.btn_get_rank);
         this.tvRankingList = (ListView) findViewById(R.id.tv_rank_list);
-       // this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
+        // this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
 
         requestQueue = Volley.newRequestQueue(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-/*
-    private void addToRankingList(String user, String points) {
 
-        //  cast String -> int
-        String strRow = user + "  |  " + points;
-        String currentText = tvRankingList.getText().toString();
-        this.tvRankingList.setText(currentText + "\n\n" + strRow);
-
-    }
-
-    private void setRankingListText(String str) {
-        this.tvRankingList.
-    }
-*/
 
     private void getRanking() {
 
         this.url = this.baseUrl + "/users/all";
-     //   this.tvRankingList.setText(null);
+        //   this.tvRankingList.setText(null);
 
         //  https://developer.android.com/training/volley/index.html
 
@@ -83,14 +74,14 @@ public class Users extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         if (response.length() > 0) {
-                                    usersList.clear();
+                            usersList.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject jsonObj = response.getJSONObject(i);
                                     String name = jsonObj.get("name").toString();
                                     String points = jsonObj.get("points").toString();
-                                    int pointsInt =  Integer.parseInt(points);
-                                    usersList.add(new User(name, pointsInt));
+                                    int pointsInt = Integer.parseInt(points);
+                                    usersList.add(new UserModel(name, pointsInt));
 
                                     // addToRankingList(name, points);
                                 } catch (JSONException e) {
@@ -98,7 +89,7 @@ public class Users extends AppCompatActivity {
                                 }
                             }
                         } else {
-                           //  setRankingListText("No users found.");
+                            //  setRankingListText("No users found.");
                         }
 
                     }
@@ -107,7 +98,7 @@ public class Users extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                      //  setRankingListText("Error while calling REST API");
+                        //  setRankingListText("Error while calling REST API");
                         Log.e("Volley", error.toString());
                     }
                 }
@@ -119,13 +110,15 @@ public class Users extends AppCompatActivity {
     public void getRankingClicked(View v) {
 
 
-       getRanking();
+        new JSONTask().execute();
+         /*
+        getRanking();
 
 
         Collections.sort(usersList, new UserComparator());
         List<String> usersToString = new ArrayList<String>();
 
-        for (User i : usersList){
+        for (UserModel i : usersList) {
             String user = i.getName();
             String points = Integer.toString(i.getPoints());
             usersToString.add(user + "  |  " + points);
@@ -138,47 +131,42 @@ public class Users extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
 
-            Toast.makeText(Users.this, selectedUser, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Users.this, selectedUser, Toast.LENGTH_SHORT).show();
             }
         });
+
+        */
     }
 
-    /*
-    private class JSONTask extends AsyncTask<URL,String,String>{
 
+    public class JSONTask extends AsyncTask<String, String, List<UserModel>> {
         @Override
-        protected String doInBackground(URL... urls) {
+        protected List<UserModel> doInBackground(String... strings) {
 
+            String url = "https://dc3d2d22.ngrok.io/users/all";
+            final List<UserModel> userList = new ArrayList<UserModel>();
 
-            final UserRepository repository = new UserRepository();
-            JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, address,
+            JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
 
-
                             if (response.length() > 0) {
-                                repository.clearList();
+                                userList.clear();
                                 for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject jsonObj = response.getJSONObject(i);
                                         String name = jsonObj.get("name").toString();
                                         String points = jsonObj.get("points").toString();
-                                        int pointsInt =  Integer.parseInt(points);
-                                        User user = new User(name, pointsInt);
-                                        repository.addUser(user);
+                                        int pointsInt = Integer.parseInt(points);
+                                        userList.add(new UserModel(name, pointsInt));
 
+                                        // addToRankingList(name, points);
                                     } catch (JSONException e) {
                                         Log.e("Volley", "Invalid JSON Object.");
                                     }
-
-
                                 }
-
-                            }
-
-
-                            else {
+                            } else {
                                 //  setRankingListText("No users found.");
                             }
 
@@ -189,18 +177,47 @@ public class Users extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //  setRankingListText("Error while calling REST API");
-                            Log.e("Volley", error.toString());
+                            Log.e("Error", error.toString());
                         }
                     }
             );
             requestQueue.add(arrReq);
-        return repository;
+
+            return userList;
         }
 
-    }
-*/
+
+        protected void onPostExecute(final List<UserModel> result, Context context) {
+            super.onPostExecute(result);
+
+            Collections.sort(result, new UserComparator());
+            List<String> usersToString = new ArrayList<String>();
+
+            if (result != null) {
+                for (UserModel i : result) {
+                    String user = i.getName();
+                    String points = Integer.toString(i.getPoints());
+                    usersToString.add(user + "  |  " + points);
+                }
+
+                ListAdapter adapter = new ArrayAdapter<String>(context, R.layout.row, R.id.textView1, usersToString);
+                tvRankingList.setAdapter(adapter);
+                tvRankingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
+
+                        Toast.makeText(Users.this, selectedUser, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+
 
     }
+}
+
 
 // https://developer.android.com/training/volley/index.html
 // https://www.londonappdeveloper.com/consuming-a-json-rest-api-in-android/
