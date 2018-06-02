@@ -143,7 +143,7 @@ public class Users extends AppCompatActivity {
         @Override
         protected List<UserModel> doInBackground(String... strings) {
 
-            String url = "https://dc3d2d22.ngrok.io/users/all";
+            String url = "https://f4cb1345.ngrok.io/users/all";
             final List<UserModel> userList = new ArrayList<UserModel>();
 
             JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
@@ -187,7 +187,7 @@ public class Users extends AppCompatActivity {
         }
 
 
-        protected void onPostExecute(final List<UserModel> result, Context context) {
+        protected void onPostExecute(final List<UserModel> result) {
             super.onPostExecute(result);
 
             Collections.sort(result, new UserComparator());
@@ -200,8 +200,8 @@ public class Users extends AppCompatActivity {
                     usersToString.add(user + "  |  " + points);
                 }
 
-                ListAdapter adapter = new ArrayAdapter<String>(context, R.layout.row, R.id.textView1, usersToString);
-                tvRankingList.setAdapter(adapter);
+                ListAdapter adapter = new ArrayAdapter<String>(Users.this, R.layout.row, R.id.textView1, usersToString);
+                Users.this.tvRankingList.setAdapter(adapter);
                 tvRankingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

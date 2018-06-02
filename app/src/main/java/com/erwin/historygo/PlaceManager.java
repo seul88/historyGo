@@ -73,7 +73,7 @@ public class PlaceManager extends AppCompatActivity {
     }
 
     public void openActivityZamek(){
-        Intent intent = new Intent(this, Places.class);
+        Intent intent = new Intent(this, Zamek.class);
         startActivity(intent);
     }
 

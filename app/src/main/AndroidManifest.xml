@@ -48,23 +48,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Places"
+            android:name=".Zamek"
             android:label="Places"
-            android:parentActivityName=".Main"
+            android:parentActivityName=".PlaceManager"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Politechnika"
-            android:parentActivityName=".Main"
+            android:parentActivityName=".PlaceManager"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Ratusz"
-            android:parentActivityName=".Main"
+            android:parentActivityName=".PlaceManager"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Malta"
+            android:parentActivityName=".PlaceManager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlaceManager"
             android:parentActivityName=".Main"
             android:screenOrientation="portrait" />
-        <activity android:name=".PlaceManager"></activity>
     </application>
 
 </manifest>

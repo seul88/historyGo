@@ -3,37 +3,31 @@ package com.erwin.historygo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.GroundOverlayOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.GroundOverlay
-
-
-
-
-
-
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.support.v4.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 
 
 class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickListener {
 
-    override fun onPolygonClick(p0: Polygon?) {
-        Toast.makeText(this, "Kliknięto w obszar gry! " + p0.toString(),
-                Toast.LENGTH_SHORT).show();
-    }
 
-
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
     private lateinit var mMap: GoogleMap
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +38,52 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickLi
         mapFragment.getMapAsync(this)
 
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 
     }
+
+
+
+    override fun onPolygonClick(p0: Polygon?) {
+        Toast.makeText(this, "Kliknięto w obszar gry! " + p0.toString(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun setUpMap() {
+        if (ActivityCompat.checkSelfPermission(this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        mMap.isMyLocationEnabled = true
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
+        }
+
+
+    }
+
+
+
     
     override fun onMapReady(googleMap: GoogleMap) {
+
+
+
 
         /* ----------  MAPA ---------- */
 
@@ -57,11 +92,14 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickLi
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.map_style));
 
+
+
         // restrict to Poznan
         val Poznan = LatLngBounds(
-                LatLng( 52.367342, 16.810038), LatLng( 52.458707, 17.042851))
-        mMap.setLatLngBoundsForCameraTarget(Poznan)
+                LatLng( 52.367342, 16.810038), LatLng( 52.458707, 17.342851))
+         mMap.setLatLngBoundsForCameraTarget(Poznan)
 
+        setUpMap()
 
 
         /* ----------  MIEJSCA - KOORDYNATY  ---------- */
@@ -80,9 +118,11 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickLi
                 .snippet("Zamek Cesarski, wybudowany w 1910 roku.")
         )
 
-        mMap.addMarker(MarkerOptions().position(ratusz)
+        mMap.addMarker(MarkerOptions()
+                .position(ratusz)
                 .title("Ratusz")
                 .snippet("Przyjdź o 12.00 zobaczyć koziołki.")
+
         )
 
         mMap.addMarker(MarkerOptions().position(zoo)
@@ -101,6 +141,21 @@ class Maps : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolygonClickLi
         )
 
 
+        mMap.setOnInfoWindowClickListener { arg0 ->
+            var intent = Intent();
+            when (arg0.title){
+                "Politechnika" -> intent = Intent(baseContext, Politechnika::class.java)
+                "Ratusz"       -> intent = Intent(baseContext, Ratusz::class.java)
+                "Malta"        -> intent = Intent(baseContext, Malta::class.java)
+                "Zamek"        -> intent = Intent(baseContext, Zamek::class.java)
+
+                else ->  intent = Intent(baseContext, PlaceManager::class.java)
+            }
+
+            startActivity(intent)
+
+
+        };
 
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(zamek))
 
