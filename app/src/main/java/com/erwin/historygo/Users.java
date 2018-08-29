@@ -1,6 +1,5 @@
 package com.erwin.historygo;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,9 +27,10 @@ import com.erwin.historygo.api.UserModel;
 import com.erwin.historygo.api.UserComparator;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +43,7 @@ public class Users extends AppCompatActivity {
     ListView tvRankingList;
     RequestQueue requestQueue;
     List<UserModel> usersList;
-    String baseUrl = "https://dc3d2d22.ngrok.io";
+    String baseUrl = "https://4357ab3d.ngrok.io";
     String url;
 
     @Override
@@ -55,8 +55,17 @@ public class Users extends AppCompatActivity {
         this.tvRankingList = (ListView) findViewById(R.id.tv_rank_list);
         // this.tvRankingList.setMovementMethod(new ScrollingMovementMethod());
 
-        requestQueue = Volley.newRequestQueue(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        btnGetRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new getRankingAsync().execute();
+            }
+        });
+
+
+        //requestQueue = Volley.newRequestQueue(this);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -107,13 +116,59 @@ public class Users extends AppCompatActivity {
     }
 
 
+
+    public class getRankingAsync extends AsyncTask<String, String, String> {
+
+
+        public String urlString;
+        public String value;
+
+        @Override
+        protected void onPreExecute(){
+            this.urlString = "https://4357ab3d.ngrok.io/users/all";
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try{
+                URL url = new URL(urlString);
+                HttpURLConnection con =  (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                this.value = br.readLine();
+                System.out.println(value);
+                Toast.makeText(Users.this, value, Toast.LENGTH_LONG);
+
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        return "OK";
+        }
+
+
+
+    }
+
+
+
     public void getRankingClicked(View v) {
 
 
-        new JSONTask().execute();
-         /*
-        getRanking();
 
+
+       // getRanking();
+/*
 
         Collections.sort(usersList, new UserComparator());
         List<String> usersToString = new ArrayList<String>();
@@ -135,7 +190,7 @@ public class Users extends AppCompatActivity {
             }
         });
 
-        */
+*/
     }
 
 
@@ -143,7 +198,7 @@ public class Users extends AppCompatActivity {
         @Override
         protected List<UserModel> doInBackground(String... strings) {
 
-            String url = "https://f4cb1345.ngrok.io/users/all";
+            String url = "https://abfa4f13.ngrok.io/users/all";
             final List<UserModel> userList = new ArrayList<UserModel>();
 
             JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
