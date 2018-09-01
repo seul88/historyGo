@@ -1,36 +1,58 @@
 package com.erwin.historygo;
 
+import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.erwin.historygo.api.UserComparator;
+import com.erwin.historygo.api.UserModel;
+import com.erwin.historygo.api.UserRepository;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.json.*;
 
 
+// http://www.vogella.com/tutorials/AndroidListView/article.html
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
 
-
+/*
     Button bt;
     public TextView tv;
+    public ListView lv;
+
+*/
+
+public ArrayAdapter<String> adapter;
+public ArrayList<String> displayList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        displayList = new ArrayList<>();
+        /*
         setContentView(R.layout.activity_mainz);
 
         this.bt = (Button) findViewById(R.id.button);
         this.tv = (TextView) findViewById(R.id.textView);
+        this.lv = (ListView) findViewById(R.id.listView);
 
         bt.setOnClickListener(new View.OnClickListener() {
 
@@ -39,6 +61,21 @@ public class MainActivity extends AppCompatActivity {
                 new task().execute();
             }
         });
+        */
+        //displayList = new ArrayList<>();
+       // displayList.add(":)");
+        new task().execute();
+         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, displayList );
+        adapter.notifyDataSetChanged();
+       // setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, displayList ) );
+        setListAdapter(adapter);
+
+    }
+
+
+    public void onListItemClick( ListView parent , View v, int position, long id){
+        String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
+        Toast.makeText(this, selectedUser, Toast.LENGTH_SHORT).show();
     }
 
     public class task extends android.os.AsyncTask<String, String, String> {
@@ -46,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         public String value;
         public String result;
-
-
+        private UserRepository users;
         public String playerName;
         public String playerPoints;
 
@@ -55,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+            Toast.makeText(MainActivity.this, "Fetching users' data from server...", Toast.LENGTH_LONG ).show();
         }
 
 
@@ -63,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            String urlStr = "https://c701059d.ngrok.io/users/all";
+            String urlStr = "https://d914013e.ngrok.io/users/all";
+            users = new UserRepository();
 
             try {
                 URL url = new URL(urlStr);
@@ -77,14 +115,22 @@ public class MainActivity extends AppCompatActivity {
                 result = "";
                 JSONArray array = new JSONArray(value);
 
-                for (int i=0; i <= array.length(); i++) {
+
+
+
+
+                for (int i=0; i < array.length(); i++) {
                     JSONObject player1 = array.getJSONObject(i);
 
                     String playerName =  player1.getString("name");
                     int points = player1.getInt("points");
-                    String playerPoints = Integer.toString(points);
+                    //String playerPoints = Integer.toString(points);
+                    String email = player1.getString("email");
+                    String country = player1.getString("country");
+                    int id = player1.getInt("id");
 
-                    result += playerName + "  " + playerPoints + "\n";
+                    users.addUser(new UserModel(playerName, points, email, country, id));
+                   // result += tempUsr.toString() + "\n";
                 }
 
             }
@@ -104,8 +150,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s){
             super.onPostExecute(s);
-            Toast.makeText(MainActivity.this, this.result, Toast.LENGTH_LONG ).show();
-            tv.setText(this.result);
+
+            Collections.sort(users.getUsers(), new UserComparator());
+
+
+
+           // tv.setText(this.users.getUsers().toString());
+
+            for (UserModel _user : users.getUsers()){
+                    displayList.add(_user.getName() + "  " + _user.getPoints());
+              }
+            adapter.notifyDataSetChanged();
+         //   setListAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, displayList ) );
+
         }
     }
 

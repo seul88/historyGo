@@ -1,11 +1,11 @@
 package com.erwin.historygo.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
 
     private List<UserModel> usersList;
-
 
     public List<UserModel> getUsers(){
         return usersList;
@@ -19,5 +19,7 @@ public class UserRepository {
         this.usersList.clear();
     }
 
-
+    public UserRepository() {
+        this.usersList = new ArrayList<>();
+    }
 }
