@@ -74,8 +74,7 @@ public class UsersRankingActivity extends AppCompatActivity {
         public String value;
         public String result;
         private UserRepository users;
-        public String playerName;
-        public String playerPoints;
+
 
 
         @Override

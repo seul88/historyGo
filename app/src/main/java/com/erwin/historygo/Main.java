@@ -37,8 +37,8 @@ public class Main extends AppCompatActivity {
                 this.startActivity(intent2);
                 return true;
 
-            case R.id.activity_place_manager:
-                Intent intent3 = new Intent(this, PlaceManager.class);
+            case R.id.activity_place:
+                Intent intent3 = new Intent(this, PlacesList.class);
                 this.startActivity(intent3);
                 return true;
 

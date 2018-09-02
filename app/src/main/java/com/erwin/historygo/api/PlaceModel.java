@@ -75,6 +75,14 @@ public class PlaceModel {
     }
 
 
+    public PlaceModel(String name, int points, String description, int year) {
+
+        this.name = name;
+        this.points = points;
+        this.description = description;
+        this.year = year;
+    }
+
     public PlaceModel(String id, String name, int points, double rating, String description, int year) {
         this.id = id;
         this.name = name;

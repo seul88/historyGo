@@ -14,7 +14,7 @@
         app:showAsAction="never"
         />
 
-    <item android:id="@+id/activity_place_manager"
+    <item android:id="@+id/activity_place"
         android:title="Places"
         app:showAsAction="never" />
 

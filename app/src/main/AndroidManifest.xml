@@ -36,12 +36,25 @@
             android:label="Map"
             android:parentActivityName=".Main" />
 
+
+
+
         <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+        <activity android:name=".PlaceActivity"
+                 android:parentActivityName=".PlacesList"
+        />
+
+        <activity android:name=".PlacesList"
+            android:parentActivityName=".Main"
+        />
 
         <activity android:name=".UsersRankingActivity"
             android:parentActivityName=".Main"
