@@ -60,6 +60,11 @@
             android:name=".Politechnika"
             android:parentActivityName=".PlaceManager"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".UserActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Ratusz"
             android:parentActivityName=".PlaceManager"

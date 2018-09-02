@@ -1,17 +1,23 @@
 package com.erwin.historygo;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.erwin.historygo.adapters.RankingAdapter;
 import com.erwin.historygo.api.UserComparator;
 import com.erwin.historygo.api.UserModel;
 import com.erwin.historygo.api.UserRepository;
@@ -29,7 +35,7 @@ import org.json.*;
 
 // http://www.vogella.com/tutorials/AndroidListView/article.html
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
 
 /*
     Button bt;
@@ -37,19 +43,23 @@ public class MainActivity extends ListActivity {
     public ListView lv;
 
 */
-
+/*
 public ArrayAdapter<String> adapter;
 public ArrayList<String> displayList;
+*/
 
-
+    public RankingAdapter adapter;
+    public ArrayList<UserModel> displayList;
+    public ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        displayList = new ArrayList<>();
-        /*
         setContentView(R.layout.activity_mainz);
+        displayList = new ArrayList<UserModel>();
 
+
+/*
         this.bt = (Button) findViewById(R.id.button);
         this.tv = (TextView) findViewById(R.id.textView);
         this.lv = (ListView) findViewById(R.id.listView);
@@ -64,20 +74,48 @@ public ArrayList<String> displayList;
         */
         //displayList = new ArrayList<>();
        // displayList.add(":)");
-        new task().execute();
-         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, displayList );
-        adapter.notifyDataSetChanged();
+
+
+
        // setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, displayList ) );
-        setListAdapter(adapter);
+
+
+
+        this.adapter = new RankingAdapter(this, displayList );
+
+        this.listView = (ListView) findViewById(R.id.listView);
+
+        this.listView.setAdapter(adapter);
+        new task().execute();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                UserModel user = (UserModel) parent.getItemAtPosition(position);
+                Intent myIntent = new Intent(MainActivity.this, UserActivity.class);
+                String userName = user.getName();
+                String userCountry = user.getCountry();
+                String userPoints = Integer.toString(user.getPoints());
+
+
+                myIntent.putExtra("userName",userName);
+                myIntent.putExtra("userCountry",userCountry);
+                myIntent.putExtra("userPoints",userPoints);
+                startActivity(myIntent);
+               // String selectedUser =   user.getName() + "  " + user.getCountry() + "  " + user.getEmail();
+               // Toast.makeText(MainActivity.this, selectedUser, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
-
-    public void onListItemClick( ListView parent , View v, int position, long id){
+/*
+    public void onItermClick( ListView parent , View v, int position, long id){
         String selectedUser = "You've chosen: " + String.valueOf(parent.getItemAtPosition(position));
         Toast.makeText(this, selectedUser, Toast.LENGTH_SHORT).show();
     }
-
+*/
     public class task extends android.os.AsyncTask<String, String, String> {
 
 
@@ -91,7 +129,18 @@ public ArrayList<String> displayList;
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            Toast.makeText(MainActivity.this, "Fetching users' data from server...", Toast.LENGTH_LONG ).show();
+            Toast.makeText(MainActivity.this, "Fetching users' data from server...", Toast.LENGTH_SHORT ).show();
+
+            ProgressBar progressBar = new ProgressBar(MainActivity.this);
+            progressBar.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                    ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER));
+            progressBar.setIndeterminate(true);
+            listView.setEmptyView(progressBar);
+
+            ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+            root.addView(progressBar);
+
+
         }
 
 
@@ -100,7 +149,7 @@ public ArrayList<String> displayList;
 
 
 
-            String urlStr = "https://d914013e.ngrok.io/users/all";
+            String urlStr = "https://82b56a19.ngrok.io/users/all";
             users = new UserRepository();
 
             try {
@@ -158,7 +207,8 @@ public ArrayList<String> displayList;
            // tv.setText(this.users.getUsers().toString());
 
             for (UserModel _user : users.getUsers()){
-                    displayList.add(_user.getName() + "  " + _user.getPoints());
+                    displayList.add(_user);
+                //adapter.add(_user);
               }
             adapter.notifyDataSetChanged();
          //   setListAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, displayList ) );
