@@ -19,11 +19,10 @@ public class UserActivity extends AppCompatActivity {
         TextView tvPoints = (TextView) findViewById(R.id.tvPoints);
         TextView tvCountry = (TextView) findViewById(R.id.tvCountry);
 
-
         tvName.setText(myIntent.getStringExtra("userName"));
         tvPoints.setText(myIntent.getStringExtra("userPoints"));
         tvCountry.setText(myIntent.getStringExtra("userCountry"));
-        Toast.makeText(UserActivity.this, myIntent.getStringExtra("userName"), Toast.LENGTH_SHORT).show();
+
     }
 
 

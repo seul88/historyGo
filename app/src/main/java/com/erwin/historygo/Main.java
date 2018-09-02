@@ -32,8 +32,8 @@ public class Main extends AppCompatActivity {
                 Intent intent1 = new Intent(this, Maps.class);
                 this.startActivity(intent1);
                 return true;
-            case R.id.activity_users_view:
-                Intent intent2 = new Intent(this, Users.class);
+            case R.id.activity_user_ranking:
+                Intent intent2 = new Intent(this, UsersRankingActivity.class);
                 this.startActivity(intent2);
                 return true;
 
@@ -41,7 +41,6 @@ public class Main extends AppCompatActivity {
                 Intent intent3 = new Intent(this, PlaceManager.class);
                 this.startActivity(intent3);
                 return true;
-
 
 
             default:

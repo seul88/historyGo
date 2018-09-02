@@ -35,22 +35,18 @@
             android:name=".Maps"
             android:label="Map"
             android:parentActivityName=".Main" />
-        <activity
-            android:name=".Users"
-            android:label="Users"
-            android:parentActivityName=".Main"
-            android:screenOrientation="portrait" />
+
         <activity android:name=".Main">
-
-        </activity>
-
-        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".UsersRankingActivity"
+            android:parentActivityName=".Main"
+        />
+
         <activity
             android:name=".Zamek"
             android:label="Places"
@@ -63,7 +59,7 @@
 
         <activity
             android:name=".UserActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".UsersRankingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Ratusz"
