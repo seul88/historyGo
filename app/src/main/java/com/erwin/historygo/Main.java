@@ -29,7 +29,7 @@ public class Main extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.activity_maps:
-                Intent intent1 = new Intent(this, Maps.class);
+                Intent intent1 = new Intent(this, Map.class);
                 this.startActivity(intent1);
                 return true;
             case R.id.activity_user_ranking:

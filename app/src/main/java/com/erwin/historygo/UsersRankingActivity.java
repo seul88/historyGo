@@ -98,7 +98,9 @@ public class UsersRankingActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-            String urlStr = "https://82b56a19.ngrok.io/users/all";
+
+            String urlBase = getResources().getString(R.string.app_server);
+            String urlStr = urlBase + "/users/all";
             users = new UserRepository();
 
             try {

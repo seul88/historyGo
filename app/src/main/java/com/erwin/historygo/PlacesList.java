@@ -102,7 +102,9 @@ public class PlacesList extends AppCompatActivity {
             @Override
             protected String doInBackground(String... strings) {
 
-                String urlStr = "https://82b56a19.ngrok.io/places/all";
+
+                String urlBase = getResources().getString(R.string.app_server);
+                String urlStr = urlBase + "/places/all";
                 places = new PlaceRepository();
 
                 try {
