@@ -3,6 +3,7 @@ package com.erwin.historygo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 public class PlaceActivity extends AppCompatActivity {
@@ -25,6 +26,9 @@ public class PlaceActivity extends AppCompatActivity {
         tvPoints.setText(myIntent.getStringExtra("placePoints"));
         tvYear.setText(myIntent.getStringExtra("placeYear"));
         tvDescription.setText(myIntent.getStringExtra("placeDescription"));
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
+
+
     }
 
 

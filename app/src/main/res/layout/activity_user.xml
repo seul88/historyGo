@@ -1,35 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#DBC6AF">
 
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="a"
-            />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="342dp"
+                android:layout_height="197dp"
 
-        <TextView
-            android:id="@+id/tvPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="b"
-            />
 
-        <TextView
-            android:id="@+id/tvCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="c"
-            />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:padding="5dp"
+                android:textColor="#8D90BF"
+                android:textSize="70dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPointsPlaceholder"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="178dp"
+                android:layout_marginStart="19dp"
+                android:padding="5dp"
+                android:text="Points"
+                android:textColor="#8D90BF"
+                android:textSize="30dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/tvPoints"
+                android:layout_width="221dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignBottom="@+id/tvPointsPlaceholder"
+
+                android:layout_alignParentEnd="true"
+                android:padding="5dp"
+                android:textColor="#8D90BF"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tvCountryPlaceholder"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/tvPointsPlaceholder"
+                android:layout_marginBottom="51dp"
+                android:padding="5dp"
+                android:text="Country"
+                android:textColor="#8D90BF"
+                android:textSize="30dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/tvCountry"
+                android:layout_width="222dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignBottom="@+id/tvCountryPlaceholder"
+                android:layout_toEndOf="@+id/tvPointsPlaceholder"
+                android:padding="5dp"
+                android:textColor="#8D90BF"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>
