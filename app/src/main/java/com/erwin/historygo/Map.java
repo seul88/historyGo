@@ -44,7 +44,6 @@ import java.util.ArrayList;
 
 
 
-
 public class Map extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener {
 
@@ -79,7 +78,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
-
     private void setUpMap(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -102,11 +100,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         }
 
-
-
-
     }
-
 
 
     @Override
@@ -126,8 +120,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-
-
 
 
     @Override
@@ -192,8 +184,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                     double length = placeObj.getDouble(("gps_E"));
                  //   String country = placeObj.getString("country");
 
-                //    String id, String name, int points, double rating, String description, int year, double latitude, double length
-
                     places.addPlace(new PlaceModel(id, placeName, points, rating, description, year, latitude, length));
                 }
             } catch (Exception ex) {
@@ -222,10 +212,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                 //   int place = (int)(marker.getTag());
-                    Toast.makeText(Map.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
-
-
 
                             for (PlaceModel place : places.getPlaces()){
                                 if (place.getName().equals(marker.getTitle())){
@@ -242,7 +228,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                                     //  myIntent.putExtra("placeRating",placeRating);
                                     myIntent.putExtra("placeYear", placeYear);
                                     startActivity(myIntent);
-
                                 }
                             }
 
@@ -250,7 +235,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                     return false;
                 }
             });
-
 
         }
     }
