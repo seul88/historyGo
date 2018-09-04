@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">HistoryGO</string>
     <string name="title_activity_maps">Map</string>
-    <string name="app_server">https://b476f90a.ngrok.io</string>
+    <string name="app_server">https://435b2b44.ngrok.io</string>
 </resources>

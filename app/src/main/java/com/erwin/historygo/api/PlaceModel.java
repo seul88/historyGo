@@ -2,19 +2,21 @@ package com.erwin.historygo.api;
 
 public class PlaceModel {
 
-    private String id;
+    private int id;
     private String name;
     private int points;
     private double rating;
     private String description;
     private int year;
     private String image;
+    private double latitude;
+    private double length;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,6 +68,22 @@ public class PlaceModel {
         this.image = image;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
     public PlaceModel(String name) {
         this.name = name;
     }
@@ -73,7 +91,6 @@ public class PlaceModel {
     public PlaceModel(){
 
     }
-
 
     public PlaceModel(String name, int points, String description, int year) {
 
@@ -83,7 +100,7 @@ public class PlaceModel {
         this.year = year;
     }
 
-    public PlaceModel(String id, String name, int points, double rating, String description, int year) {
+    public PlaceModel(int id, String name, int points, double rating, String description, int year) {
         this.id = id;
         this.name = name;
         this.points = points;
@@ -92,7 +109,7 @@ public class PlaceModel {
         this.year = year;
     }
 
-    public PlaceModel(String id, String name, int points, double rating, String description, int year, String image) {
+    public PlaceModel(int id, String name, int points, double rating, String description, int year, String image) {
         this.id = id;
         this.name = name;
         this.points = points;
@@ -100,5 +117,16 @@ public class PlaceModel {
         this.description = description;
         this.year = year;
         this.image = image;
+    }
+
+    public PlaceModel(int id, String name, int points, double rating, String description, int year, double latitude, double length) {
+        this.id = id;
+        this.name = name;
+        this.points = points;
+        this.rating = rating;
+        this.description = description;
+        this.year = year;
+        this.latitude = latitude;
+        this.length = length;
     }
 }
