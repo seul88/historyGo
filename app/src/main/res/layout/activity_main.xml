@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DBC6AF"
+    android:background="@color/colorPrimary">
     tools:context=".activities.Main"
     >
 
     <TextView
+        android:text="HistoryGO"
         android:id="@+id/gameTitle"
         android:layout_width="238dp"
         android:layout_height="53dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center"
-        android:text="HistoryGO"
+        android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,9 +29,9 @@
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="Poznań"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,13 +41,33 @@
 
     <ImageView
         android:id="@+id/gameLogo"
-        android:layout_width="286dp"
-        android:layout_height="187dp"
+        android:layout_width="397dp"
+        android:layout_height="262dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitle"
-        app:srcCompat="@drawable/rotate" />
+        app:layout_constraintVertical_bias="0.592"
+        app:srcCompat="@drawable/poznan" />
+
+    <Button
+        android:id="@+id/btStartGame"
+        android:layout_width="236dp"
+        android:layout_height="118dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@layout/rounded_button"
+        android:text="Let's GO"
+        android:textColor="#FFFFFF"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>

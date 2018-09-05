@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#DBC6AF">
+            android:background="@color/colorPrimary">
 
 
             <TextView
@@ -29,7 +29,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:padding="5dp"
-                android:textColor="#8D90BF"
+                android:textColor="#FFFFFF"
                 android:textSize="70dp"
                 android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
 
                 android:layout_alignParentEnd="true"
                 android:padding="5dp"
-                android:textColor="#8D90BF"
+                android:textColor="#FFFFFF"
                 android:textSize="40dp"
                 android:textStyle="bold" />
 
@@ -83,13 +83,11 @@
                 android:id="@+id/tvCountry"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
-
-
                 android:layout_alignBottom="@+id/tvCountryPlaceholder"
                 android:layout_toEndOf="@+id/tvPointsPlaceholder"
                 android:padding="5dp"
-                android:textColor="#8D90BF"
-                android:textSize="40dp"
+                android:textSize="30dp"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
 
