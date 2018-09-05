@@ -35,15 +35,15 @@
         <activity
             android:name=".Maps"
             android:label="Map"
-            android:parentActivityName=".Main" />
+            android:parentActivityName=".activities.Main" />
 
         <activity
-            android:name=".Map"
+            android:name=".activities.Map"
             android:label="Map"
-            android:parentActivityName=".Main" />
+            android:parentActivityName=".activities.Main" />
 
 
-        <activity android:name=".Main">
+        <activity android:name=".activities.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -52,43 +52,21 @@
 
 
 
-        <activity android:name=".PlaceActivity"
-                 android:parentActivityName=".PlacesList"
+        <activity android:name=".activities.PlaceActivity"
+                 android:parentActivityName=".activities.PlacesList"
         />
 
-        <activity android:name=".PlacesList"
-            android:parentActivityName=".Main"
+        <activity android:name=".activities.PlacesList"
+            android:parentActivityName=".activities.Main"
         />
 
-        <activity android:name=".UsersRankingActivity"
-            android:parentActivityName=".Main"
+        <activity android:name=".activities.UsersRankingActivity"
+            android:parentActivityName=".activities.Main"
         />
 
         <activity
-            android:name=".Zamek"
-            android:label="Places"
-            android:parentActivityName=".PlaceManager"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Politechnika"
-            android:parentActivityName=".PlaceManager"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".UserActivity"
-            android:parentActivityName=".UsersRankingActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Ratusz"
-            android:parentActivityName=".PlaceManager"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Malta"
-            android:parentActivityName=".PlaceManager"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".PlaceManager"
-            android:parentActivityName=".Main"
+            android:name=".activities.UserActivity"
+            android:parentActivityName=".activities.UsersRankingActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -1,4 +1,4 @@
-package com.erwin.historygo;
+package com.erwin.historygo.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.erwin.historygo.R;
 import com.erwin.historygo.adapters.PlaceAdapter;
 import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
@@ -24,7 +25,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PlacesList extends AppCompatActivity {
 

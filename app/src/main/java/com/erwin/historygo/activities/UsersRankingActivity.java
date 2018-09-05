@@ -1,4 +1,4 @@
-package com.erwin.historygo;
+package com.erwin.historygo.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.erwin.historygo.R;
 import com.erwin.historygo.adapters.RankingAdapter;
 import com.erwin.historygo.api.UserComparator;
 import com.erwin.historygo.api.UserModel;

@@ -1,4 +1,4 @@
-package com.erwin.historygo;
+package com.erwin.historygo.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -6,23 +6,20 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -209,32 +206,33 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
             }
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
-                public boolean onMarkerClick(Marker marker) {
+                public void onInfoWindowClick(Marker marker) {
 
-                            for (PlaceModel place : places.getPlaces()){
-                                if (place.getName().equals(marker.getTitle())){
+                    for (PlaceModel place : places.getPlaces()){
+                        if (place.getName().equals(marker.getTitle())){
 
-                                    Intent myIntent = new Intent(Map.this, PlaceActivity.class);
-                                    String placeName = place.getName();
-                                    String placeDescription = place.getDescription();
-                                    String placePoints = Integer.toString(place.getPoints());
-                                    //  String placeRating = Double.toString(place.getRating());
-                                    String placeYear = Integer.toString(place.getYear());
-                                    myIntent.putExtra("placeName", placeName);
-                                    myIntent.putExtra("placeDescription", placeDescription);
-                                    myIntent.putExtra("placePoints", placePoints);
-                                    //  myIntent.putExtra("placeRating",placeRating);
-                                    myIntent.putExtra("placeYear", placeYear);
-                                    startActivity(myIntent);
-                                }
-                            }
+                            Intent myIntent = new Intent(Map.this, PlaceActivity.class);
+                            String placeName = place.getName();
+                            String placeDescription = place.getDescription();
+                            String placePoints = Integer.toString(place.getPoints());
+                            //  String placeRating = Double.toString(place.getRating());
+                            String placeYear = Integer.toString(place.getYear());
+                            myIntent.putExtra("placeName", placeName);
+                            myIntent.putExtra("placeDescription", placeDescription);
+                            myIntent.putExtra("placePoints", placePoints);
+                            //  myIntent.putExtra("placeRating",placeRating);
+                            myIntent.putExtra("placeYear", placeYear);
+                            startActivity(myIntent);
+                        }
+                    }
 
 
-                    return false;
                 }
             });
+            
 
         }
     }

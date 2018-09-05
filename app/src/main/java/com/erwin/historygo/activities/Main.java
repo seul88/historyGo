@@ -1,4 +1,4 @@
-package com.erwin.historygo;
+package com.erwin.historygo.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.erwin.historygo.R;
 
 public class Main extends AppCompatActivity {
 
