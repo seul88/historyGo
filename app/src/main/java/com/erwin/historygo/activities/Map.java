@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -15,7 +17,12 @@ import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +47,6 @@ import java.util.ArrayList;
 //    https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
 
 
-
 public class Map extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener {
 
@@ -49,10 +55,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     private Location lastLocation;
     private GoogleApiClient mGoogleApiClient;
     public ArrayList<PlaceModel> displayList;
+    private LocationRequest mLocationRequest;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -61,12 +69,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
         displayList = new ArrayList<PlaceModel>();
         new task().execute();
+
+        startLocationUpdates();
+
+
     }
 
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
 
 
     @Override
@@ -75,7 +91,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
-    private void setUpMap(){
+    private void setUpMap() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -88,7 +104,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
                                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
-
+                                System.out.println(location.toString());
 
                             }
                         }
@@ -99,6 +115,51 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
     }
 
+
+    protected void startLocationUpdates() {
+
+        // Create the location request to start receiving updates
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                        @Override
+                        public void onLocationResult(LocationResult locationResult) {
+
+                            onLocationChanged(locationResult.getLastLocation());
+                        }
+                    },
+                    Looper.myLooper());
+            return;
+        }
+
+    }
+
+    public void onLocationChanged(Location location) {
+
+        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
+
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // You can now create a LatLng Object for use with maps
+     //   LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -111,6 +172,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         setUpMap();
+        mLocationRequest = new LocationRequest();
+
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+
+
+
+
     }
 
     @Override
@@ -236,4 +305,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         }
     }
+
+
+
 }
