@@ -56,8 +56,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     private GoogleApiClient mGoogleApiClient;
     public ArrayList<PlaceModel> displayList;
     private LocationRequest mLocationRequest;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-
+    public PlaceRepository places;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +104,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
                                 System.out.println(location.toString());
-
+                                checkLocationsOnList(location);
                             }
                         }
                     });
@@ -116,29 +115,47 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
+    public void checkLocationsOnList(Location location){
+
+        double longiude = location.getLongitude(); //E
+        double latitude = location.getLatitude(); //N
+
+        double north = latitude + 0.0040;
+        double south = latitude - 0.0040;
+        double west = longiude -  0.0040;
+        double east = longiude +  0.0040;
+/*
+        for (PlaceModel place : places.getPlaces()){
+            if (place.getLatitude() >= south && place.getLatitude() <= north && place.getLength() >= west && place.getLength() <= east){
+                Toast.makeText(this, "YOU MUST BE NEAR "+ place.getName(), Toast.LENGTH_LONG).show();
+            }
+        }
+ */
+        Toast.makeText(this, "Location update", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+// https://guides.codepath.com/android/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
 
-        // Create the location request to start receiving updates
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
 
 
-        // Create LocationSettingsRequest object using location request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
-        // Check whether location settings are satisfied
-        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
-
                             onLocationChanged(locationResult.getLastLocation());
                         }
                     },
@@ -152,33 +169,21 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
+         checkLocationsOnList(location);
 
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        // You can now create a LatLng Object for use with maps
-     //   LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-       mMap = googleMap;
-
-
-
+        mMap = googleMap;
         mMap.setMinZoomPreference(11f);
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         setUpMap();
         mLocationRequest = new LocationRequest();
-
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-
-
-
 
     }
 
@@ -206,7 +211,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         public String value;
         public String result;
-        private PlaceRepository places;
+        //public PlaceRepository places;
 
 
         @Override
@@ -272,7 +277,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                         .title(nameOfPlace)
                         .snippet(descriptionOfPlace));
 
-
             }
 
 
@@ -298,14 +302,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                         }
                     }
 
-
                 }
             });
 
 
         }
     }
-
 
 
 }

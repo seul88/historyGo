@@ -76,6 +76,8 @@ public class PlaceModel {
         this.latitude = latitude;
     }
 
+
+
     public double getLength() {
         return length;
     }
