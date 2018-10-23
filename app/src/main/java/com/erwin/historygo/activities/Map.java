@@ -11,13 +11,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
+import android.os.Handler;
 import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -44,19 +45,55 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
+
 //    https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener {
+        GoogleMap.OnMyLocationClickListener, LocationListener {
 
     public GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationClient;
+    public FusedLocationProviderClient mFusedLocationClient;
     private Location lastLocation;
     private GoogleApiClient mGoogleApiClient;
     public ArrayList<PlaceModel> displayList;
     private LocationRequest mLocationRequest;
     public PlaceRepository places;
+
+
+
+
+
+
+    Handler handler = new Handler();
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+
+            if (ContextCompat.checkSelfPermission(Map.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(Map.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+                            if (location != null) {
+                                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                               // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
+                                checkLocationsOnList(location);
+                            }
+                        }
+                    });
+        } else {
+
+        }
+
+            handler.postDelayed(this, 10000);
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +106,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
         displayList = new ArrayList<PlaceModel>();
         new task().execute();
 
-        startLocationUpdates();
+        handler.post(runnableCode);
+
+      //  startLocationUpdates();
 
 
     }
@@ -100,17 +138,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-
                                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
-                                System.out.println(location.toString());
-                                checkLocationsOnList(location);
+
                             }
                         }
                     });
         } else {
 
         }
+
 
     }
 
@@ -124,21 +161,35 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         double south = latitude - 0.0040;
         double west = longiude -  0.0040;
         double east = longiude +  0.0040;
-/*
+
+
         for (PlaceModel place : places.getPlaces()){
             if (place.getLatitude() >= south && place.getLatitude() <= north && place.getLength() >= west && place.getLength() <= east){
                 Toast.makeText(this, "YOU MUST BE NEAR "+ place.getName(), Toast.LENGTH_LONG).show();
             }
         }
- */
+
         Toast.makeText(this, "Location update", Toast.LENGTH_SHORT).show();
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
 // https://guides.codepath.com/android/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
 
+
+
+        /*
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
@@ -156,6 +207,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
+                            Toast.makeText(Map.this, "Location changed", Toast.LENGTH_SHORT).show();
                             onLocationChanged(locationResult.getLastLocation());
                         }
                     },
@@ -163,16 +215,32 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
             return;
         }
 
+       */
+
     }
+
 
     public void onLocationChanged(Location location) {
 
+
+
+        double longiude = location.getLongitude(); //E
+        double latitude = location.getLatitude(); //N
+
+        double north = latitude + 0.0040;
+        double south = latitude - 0.0040;
+        double west = longiude -  0.0040;
+        double east = longiude +  0.0040;
+
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
-         checkLocationsOnList(location);
-
+        checkLocationsOnList(location);
+        Toast.makeText(Map.this, "Location changed", Toast.LENGTH_SHORT).show();
 
     }
+
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -185,6 +253,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
+
     }
 
     @Override
@@ -193,10 +262,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
+
     @Override
     public void onMyLocationClick(@NonNull Location location) {
 
     }
+
+
 
     @Override
     public boolean onMyLocationButtonClick() {
