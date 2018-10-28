@@ -1,7 +1,9 @@
 package com.erwin.historygo.activities;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -64,6 +66,7 @@ public class UsersRankingActivity extends AppCompatActivity {
                 myIntent.putExtra("userCountry",userCountry);
                 myIntent.putExtra("userPoints",userPoints);
                 startActivity(myIntent);
+
             }
         });
 
@@ -81,7 +84,7 @@ public class UsersRankingActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            Toast.makeText(UsersRankingActivity.this, "Fetching users' data from server...", Toast.LENGTH_SHORT ).show();
+            //Toast.makeText(UsersRankingActivity.this, "Fetching users' data from server...", Toast.LENGTH_SHORT ).show();
 
             ProgressBar progressBar = new ProgressBar(UsersRankingActivity.this);
             progressBar.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
