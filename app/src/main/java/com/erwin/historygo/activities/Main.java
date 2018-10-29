@@ -31,8 +31,6 @@ public class Main extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        Toast.makeText(Main.this, sharedPreferences.getString("email","") , Toast.LENGTH_SHORT).show();
     }
 
 
@@ -56,12 +54,14 @@ public class Main extends AppCompatActivity {
                 Intent intent2 = new Intent(this, UsersRankingActivity.class);
                 this.startActivity(intent2);
                 return true;
-
             case R.id.activity_place:
                 Intent intent3 = new Intent(this, PlacesList.class);
                 this.startActivity(intent3);
                 return true;
-
+            case R.id.activity_my_profile:
+                Intent intent4 = new Intent(this, MyProfile.class);
+                this.startActivity(intent4);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

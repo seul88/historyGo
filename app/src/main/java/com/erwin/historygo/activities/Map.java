@@ -1,7 +1,9 @@
 package com.erwin.historygo.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -152,71 +154,78 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
-    public void checkLocationsOnList(Location location){
+    public void checkLocationsOnList(Location location) {
 
         double longiude = location.getLongitude(); //E
         double latitude = location.getLatitude(); //N
 
         double north = latitude + 0.0040;
         double south = latitude - 0.0040;
-        double west = longiude -  0.0040;
-        double east = longiude +  0.0040;
+        double west = longiude - 0.0040;
+        double east = longiude + 0.0040;
 
 
-        for (PlaceModel place : places.getPlaces()){
-            if (place.getLatitude() >= south && place.getLatitude() <= north && place.getLength() >= west && place.getLength() <= east){
-                Toast.makeText(this, "YOU MUST BE NEAR "+ place.getName(), Toast.LENGTH_LONG).show();
+        for (PlaceModel place : places.getPlaces()) {
+            if (place.getLatitude() >= south && place.getLatitude() <= north && place.getLength() >= west && place.getLength() <= east) {
+               // Toast.makeText(this, "You are near  " + place.getName(), Toast.LENGTH_LONG).show();
+
+                new markVisit().execute(place.getName());
+
+
             }
-        }
 
-        Toast.makeText(this, "Location update", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 
+    public class markVisit extends android.os.AsyncTask<String, String, String> {
+
+        String userEmail;
+        String urlBase;
+        String urlStr;
+        String placeName;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
 
+            SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+            userEmail = sharedPreferences.getString("email", "");
+            urlBase = getResources().getString(R.string.app_server);
 
-
-
-
-
-
-
-
-
-// https://guides.codepath.com/android/Retrieving-Location-with-LocationServices-API
-    protected void startLocationUpdates() {
-
-
-
-        /*
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        settingsClient.checkLocationSettings(locationSettingsRequest);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                        @Override
-                        public void onLocationResult(LocationResult locationResult) {
-                            Toast.makeText(Map.this, "Location changed", Toast.LENGTH_SHORT).show();
-                            onLocationChanged(locationResult.getLastLocation());
-                        }
-                    },
-                    Looper.myLooper());
-            return;
         }
 
-       */
 
+        @Override
+        protected String doInBackground(String... strings) {
+            placeName = strings[0];
+            urlStr = urlBase + "/visits/add/email?email=" + userEmail + "&placeName=" + placeName;
+
+            String value = "";
+
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                value = "You have just visited  " + placeName;
+
+
+
+            } catch (Exception ex) {
+
+            }
+
+            return value;
+        }
+
+        @Override
+        protected void onPostExecute(String value){
+            super.onPostExecute(value);
+            Toast.makeText(Map.this, value, Toast.LENGTH_LONG).show();
+        }
     }
 
 

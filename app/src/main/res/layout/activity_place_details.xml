@@ -36,10 +36,10 @@
             android:layout_toEndOf="@+id/tvYear"
             android:gravity="left|bottom"
             android:layout_marginLeft="15dp"
-            android:text="points"
+            android:text="POINTS"
             android:textColor="#8D90BF"
             android:textSize="16dp"
-            android:textStyle="italic" />
+             />
 
         <TextView
             android:id="@+id/tvPoints"
@@ -86,10 +86,10 @@
             android:layout_alignBottom="@+id/tvPoints"
             android:layout_marginLeft="15dp"
             android:gravity="left|bottom"
-            android:text="year"
+            android:text="YEAR"
             android:textColor="#8D90BF"
             android:textSize="16dp"
-            android:textStyle="italic" />
+            />
 
         <TextView
             android:id="@+id/tvYear"

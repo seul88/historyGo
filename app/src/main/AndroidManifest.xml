@@ -38,9 +38,8 @@
             android:parentActivityName=".activities.Main" />
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login"
             android:parentActivityName=".activities.Main"
-            android:theme="@style/AppTheme.NoActionBar">
+            >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -68,7 +67,8 @@
         <activity
             android:name=".activities.MyProfile"
             android:label="@string/title_activity_my_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".activities.Main"
+            ></activity>
     </application>
 
 </manifest>
