@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HistoryGO</string>
     <string name="title_activity_maps">Map</string>
-    <string name="app_server">http://sanderson.nazwa.pl:7777</string>
+    <string name="app_server">http://sanderson.nazwa.pl:7788</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_my_profile">MyProfile</string>
 </resources>

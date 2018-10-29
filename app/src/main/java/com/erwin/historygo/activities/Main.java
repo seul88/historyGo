@@ -13,6 +13,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.erwin.historygo.R;
+import com.erwin.historygo.api.PlaceModel;
+import com.erwin.historygo.api.PlaceRepository;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Main extends AppCompatActivity {
 
@@ -30,6 +40,8 @@ public class Main extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        new GetUserDetailsTask().execute();
 
     }
 
@@ -70,4 +82,101 @@ public class Main extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+
+
+    public class GetUserDetailsTask extends android.os.AsyncTask<String, String, String> {
+
+        String email;
+        PlaceRepository places;
+        String userName;
+        int userPoints;
+        String userCountry;
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            email = sharedPreferences.getString("email","");
+
+        }
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+
+            String urlBase = getResources().getString(R.string.app_server);
+            String urlStr = urlBase + "/users/email/" + email;
+
+            String result="";
+            String ret = "";
+            places = new PlaceRepository();
+
+
+
+
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                result += br.readLine();
+
+                JSONObject obj = new JSONObject(result);
+
+                userName = obj.getString("name");
+                userPoints = obj.getInt("points");
+                userCountry = obj.getString("country");
+
+                JSONArray array = obj.getJSONArray("places");
+
+
+
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject placeObj = array.getJSONObject(i);
+
+                    int id = placeObj.getInt("id");
+                    String placeName = placeObj.getString("name");
+                    int placePoints = placeObj.getInt("points");
+                    String description = placeObj.getString("description");
+                    int year = placeObj.getInt("year");
+                    double latitude = placeObj.getDouble("gps_N");
+                    double length = placeObj.getDouble(("gps_E"));
+
+                    places.addPlace(new PlaceModel(id, placeName, placePoints, 0, description, year, latitude, length));
+                }
+                ret =  places.getPlaces().toString();
+
+            } catch (Exception ex) {
+
+            }
+
+            return ret;
+        }
+
+        @Override
+        protected void onPostExecute(String value){
+            super.onPostExecute(value);
+
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("userName", userName);
+            editor.putString("userCountry", userCountry);
+            editor.putInt("userPoints", userPoints);
+            editor.apply();
+
+        }
+    }
+
+
+
 }

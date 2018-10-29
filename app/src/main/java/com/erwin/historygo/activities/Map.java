@@ -210,8 +210,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                 con.setRequestMethod("GET");
                 con.connect();
                 BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                value = "You have just visited  " + placeName;
-
+                value = br.readLine();
 
 
             } catch (Exception ex) {
@@ -224,7 +223,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         @Override
         protected void onPostExecute(String value){
             super.onPostExecute(value);
-            Toast.makeText(Map.this, value, Toast.LENGTH_LONG).show();
+            if (value.equals("VISITED")){
+                Toast.makeText(Map.this, "You have just visited "+placeName+" for the first time. Gratz!", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 

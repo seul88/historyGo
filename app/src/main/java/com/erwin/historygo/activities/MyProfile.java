@@ -10,9 +10,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.erwin.historygo.R;
+import com.erwin.historygo.api.PlaceModel;
+import com.erwin.historygo.api.PlaceRepository;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,79 +38,30 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MyProfile extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
+        String userName = sharedPreferences.getString("userName","");
+        String userCountry = sharedPreferences.getString("userCountry","");
+        int userPoints = sharedPreferences.getInt("userPoints",0);
 
-        new GetDetailsTask().execute();
+        TextView  tvname =  (TextView) findViewById(R.id.tvName);
+        TextView tvpoints = (TextView) findViewById(R.id.tvPoints);
+        TextView tvcountry = (TextView) findViewById(R.id.tvCountry);
+        
+        tvname.setText(userName);
+        tvpoints.setText(Integer.toString(userPoints));
+        tvcountry.setText(userCountry);
+
 
     }
 
 
-    public class GetDetailsTask extends android.os.AsyncTask<String, String, String> {
-
-        String email;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-            email = sharedPreferences.getString("email","");
-
-        }
-
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-
-            String urlBase = getResources().getString(R.string.app_server);
-            String urlStr = urlBase + "/users/email";
-
-            String result="";
-
-
-            /*
-                URL url = new URL(urlStr);
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("email", email);
-                String query = builder.build().getEncodedQuery();
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String value = br.readLine();
-
-                result = value;
-*/
-
-
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String value){
-            super.onPostExecute(value);
-
-
-            Toast.makeText(MyProfile.this, value, Toast.LENGTH_SHORT).show();
-
-        }
-    }
 }
