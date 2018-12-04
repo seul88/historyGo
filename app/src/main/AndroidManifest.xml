@@ -36,15 +36,15 @@
             android:name=".activities.Map"
             android:label="Map"
             android:parentActivityName=".activities.Main" />
+
         <activity
             android:name=".activities.LoginActivity"
             android:parentActivityName=".activities.Main">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+
+
         </activity>
+
         <activity android:name=".activities.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +70,17 @@
         <activity
             android:name=".activities.Quiz"
             android:label="@string/title_activity_quiz"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.Main"
+            android:screenOrientation="portrait"
+            >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
