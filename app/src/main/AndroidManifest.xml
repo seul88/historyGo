@@ -38,8 +38,7 @@
             android:parentActivityName=".activities.Main" />
         <activity
             android:name=".activities.LoginActivity"
-            android:parentActivityName=".activities.Main"
-            >
+            android:parentActivityName=".activities.Main">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -67,8 +66,11 @@
         <activity
             android:name=".activities.MyProfile"
             android:label="@string/title_activity_my_profile"
-            android:parentActivityName=".activities.Main"
-            ></activity>
+            android:parentActivityName=".activities.Main" />
+        <activity
+            android:name=".activities.Quiz"
+            android:label="@string/title_activity_quiz"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

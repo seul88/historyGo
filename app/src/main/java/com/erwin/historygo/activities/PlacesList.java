@@ -57,13 +57,12 @@ public class PlacesList extends AppCompatActivity {
                 String placeName = place.getName();
                 String placeDescription = place.getDescription();
                 String placePoints = Integer.toString(place.getPoints());
-                //  String placeRating = Double.toString(place.getRating());
                 String placeYear = Integer.toString(place.getYear());
 
                 myIntent.putExtra("placeName", placeName);
                 myIntent.putExtra("placeDescription", placeDescription);
                 myIntent.putExtra("placePoints", placePoints);
-                //  myIntent.putExtra("placeRating",placeRating);
+
                 myIntent.putExtra("placeYear", placeYear);
                 startActivity(myIntent);
             }

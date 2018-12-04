@@ -55,7 +55,7 @@ public class MyProfile extends AppCompatActivity {
         TextView  tvname =  (TextView) findViewById(R.id.tvName);
         TextView tvpoints = (TextView) findViewById(R.id.tvPoints);
         TextView tvcountry = (TextView) findViewById(R.id.tvCountry);
-        
+
         tvname.setText(userName);
         tvpoints.setText(Integer.toString(userPoints));
         tvcountry.setText(userCountry);

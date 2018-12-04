@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
@@ -172,6 +171,7 @@ public class Main extends AppCompatActivity {
             editor.putString("userName", userName);
             editor.putString("userCountry", userCountry);
             editor.putInt("userPoints", userPoints);
+
             editor.apply();
 
         }
