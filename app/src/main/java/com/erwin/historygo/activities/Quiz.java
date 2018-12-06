@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,8 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 public class Quiz extends AppCompatActivity {
@@ -119,6 +120,7 @@ public class Quiz extends AppCompatActivity {
 
         String response;
 
+
         if (answerText.equals(correct)) {
             response = "Correct";
             correctAnswerCounter++;
@@ -128,6 +130,7 @@ public class Quiz extends AppCompatActivity {
         }
 
 
+
         builder.setTitle(answerText);
         builder.setMessage("Correct answer is: "+ correct);
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
@@ -135,6 +138,12 @@ public class Quiz extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if (questionCounter == 4){
 
+
+                    new AddUserPoints().execute();
+                    Toast.makeText(Quiz.this,  "Your result is: "+correctAnswerCounter+"/5", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(Quiz.this, Main.class);
+                    Quiz.this.startActivity(intent);
                 }
                 else {
                     questionCounter++;
@@ -147,5 +156,44 @@ public class Quiz extends AppCompatActivity {
     builder.show();
     }
 
+    public class AddUserPoints extends android.os.AsyncTask<String, String, String> {
 
+       public SharedPreferences sharedPreferences;
+       public String userName;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+            userName = sharedPreferences.getString("userName","");
+
+        }
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String urlBase = getResources().getString(R.string.app_server);
+            String endpoint = "/users/name/"+userName+"/points/" + correctAnswerCounter;
+            String queryUrl = urlBase+endpoint;
+
+            URL url;
+            try {
+                url = new URL(queryUrl);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String result = br.readLine();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return "";
+        }
+
+    }
 }

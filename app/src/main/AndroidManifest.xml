@@ -39,7 +39,8 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:parentActivityName=".activities.Main">
+            android:parentActivityName=".activities.Main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -49,18 +50,22 @@
 
         </activity>
 
-        <activity android:name=".activities.Main">
+        <activity android:name=".activities.Main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.PlaceActivity"
             android:parentActivityName=".activities.PlacesList" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.PlacesList"
             android:parentActivityName=".activities.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.UsersRankingActivity"
             android:parentActivityName=".activities.Main" />
         <activity
@@ -68,6 +73,7 @@
             android:parentActivityName=".activities.UsersRankingActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.MyProfile"
             android:label="@string/title_activity_my_profile"
             android:parentActivityName=".activities.Main" />
