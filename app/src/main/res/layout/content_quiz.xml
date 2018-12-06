@@ -19,7 +19,7 @@
 
         <TextView
             android:layout_below="@+id/layout1"
-            android:id="@+id/textView"
+            android:id="@+id/tvQuiz"
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:layout_marginLeft="10dp"
@@ -45,6 +45,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:onClick="checkAnswer"
                  />
 
             <Button
@@ -55,6 +56,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:onClick="checkAnswer"
                />
 
         </LinearLayout>
@@ -80,6 +82,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     android:textSize="18sp"
+                    android:onClick="checkAnswer"
                      />
 
                 <Button
@@ -90,6 +93,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     android:textSize="18sp"
+                    android:onClick="checkAnswer"
                      />
             </LinearLayout>
 

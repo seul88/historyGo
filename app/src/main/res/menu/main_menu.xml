@@ -24,7 +24,9 @@
         android:title="Places"
         app:showAsAction="never" />
 
-
+    <item android:id="@+id/activity_quiz"
+        android:title="Quiz"
+        app:showAsAction="never" />
 
 
 

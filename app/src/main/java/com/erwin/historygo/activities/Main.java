@@ -10,10 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
+import com.erwin.historygo.api.QuizQuestionModel;
+import com.erwin.historygo.api.QuizQuestionRepository;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +28,8 @@ import java.net.URL;
 
 public class Main extends AppCompatActivity {
 
-    Button button;
+    public Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,10 @@ public class Main extends AppCompatActivity {
                 Intent intent4 = new Intent(this, MyProfile.class);
                 this.startActivity(intent4);
                 return true;
+            case R.id.activity_quiz:
+                new QuizFetchTask().execute();
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -173,10 +181,65 @@ public class Main extends AppCompatActivity {
             editor.putInt("userPoints", userPoints);
 
             editor.apply();
-
         }
     }
 
 
+
+
+
+
+
+    public class QuizFetchTask extends android.os.AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String urlBase = getResources().getString(R.string.app_server);
+            String urlStr = urlBase + "/questions/random";
+
+            String value="";
+
+
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                value = br.readLine();
+
+
+            } catch (Exception ex) {
+
+            }
+
+            return value;
+        }
+
+        @Override
+        protected void onPostExecute(String value){
+            super.onPostExecute(value);
+
+            Intent intent5 = new Intent(Main.this, Quiz.class);
+            intent5.putExtra("json", value);
+
+            Main.this.startActivity(intent5);
+
+            /*
+            for (QuizQuestionModel question : questionRepository.getQuestions() ){
+
+                Toast.makeText(Main.this,  question.getA(), Toast.LENGTH_SHORT).show();
+            }
+*/
+        }
+    }
 
 }
