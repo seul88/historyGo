@@ -2,17 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/activity_maps"
-        android:title="Map"
-        app:showAsAction="never"
-        />
+    <item android:id="@+id/activity_quiz"
+        android:title="Quiz"
+        app:showAsAction="never" />
+
 
     <item
         android:id="@+id/activity_my_profile"
         android:title="My Profile"
         app:showAsAction="never"
         />
+
+    <item
+        android:id="@+id/activity_maps"
+        android:title="Map" />
+
 
     <item
         android:id="@+id/activity_user_ranking"
@@ -24,9 +28,6 @@
         android:title="Places"
         app:showAsAction="never" />
 
-    <item android:id="@+id/activity_quiz"
-        android:title="Quiz"
-        app:showAsAction="never" />
 
 
 

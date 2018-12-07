@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
-import com.erwin.historygo.api.UserModel;
 
 import java.util.ArrayList;
 

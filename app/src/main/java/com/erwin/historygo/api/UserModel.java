@@ -1,6 +1,5 @@
 package com.erwin.historygo.api;
 
-import android.support.annotation.NonNull;
 
 public class UserModel {
     private String name;

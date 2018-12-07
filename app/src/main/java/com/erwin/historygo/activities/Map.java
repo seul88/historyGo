@@ -7,9 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -19,13 +17,9 @@ import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,7 +42,7 @@ import java.util.ArrayList;
 
 
 
-//    https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
+// https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, GoogleMap.OnMyLocationButtonClickListener,
@@ -82,7 +76,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
                             if (location != null) {
                                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                               // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
                                 checkLocationsOnList(location);
                             }
                         }
@@ -109,11 +102,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         displayList = new ArrayList<PlaceModel>();
-        new task().execute();
+        new fetchPlacesTask().execute();
 
         handler.post(runnableCode);
-
-      //  startLocationUpdates();
 
 
     }
@@ -121,7 +112,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 seconds */
 
 
     @Override
@@ -138,7 +129,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
+
                             if (location != null) {
                                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f));
@@ -146,10 +137,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                             }
                         }
                     });
-        } else {
-
         }
-
 
     }
 
@@ -167,13 +155,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
 
         for (PlaceModel place : places.getPlaces()) {
             if (place.getLatitude() >= south && place.getLatitude() <= north && place.getLength() >= west && place.getLength() <= east) {
-               // Toast.makeText(this, "You are near  " + place.getName(), Toast.LENGTH_LONG).show();
 
                 new markVisit().execute(place.getName());
 
-
             }
-
 
         }
     }
@@ -224,7 +209,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
         protected void onPostExecute(String value){
             super.onPostExecute(value);
             if (value.equals("VISITED")){
-                Toast.makeText(Map.this, "You have just visited "+placeName+" for the first time. Gratz!", Toast.LENGTH_LONG).show();
+                Toast.makeText(Map.this, "You have just visited "+placeName+" for the first time. Points have been added!", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -289,18 +274,17 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
     }
 
 
-    public class task extends android.os.AsyncTask<String, String, String> {
+    public class fetchPlacesTask extends android.os.AsyncTask<String, String, String> {
 
 
         public String value;
         public String result;
-        //public PlaceRepository places;
+
 
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(Map.this, "Fetching places' data from server...", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -388,9 +372,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Google
                 }
             });
 
-
         }
     }
-
 
 }

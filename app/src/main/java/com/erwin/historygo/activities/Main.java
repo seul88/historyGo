@@ -10,17 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import com.erwin.historygo.R;
 import com.erwin.historygo.api.PlaceModel;
 import com.erwin.historygo.api.PlaceRepository;
-import com.erwin.historygo.api.QuizQuestionModel;
-import com.erwin.historygo.api.QuizQuestionRepository;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -233,12 +227,6 @@ public class Main extends AppCompatActivity {
 
             Main.this.startActivity(intent5);
 
-            /*
-            for (QuizQuestionModel question : questionRepository.getQuestions() ){
-
-                Toast.makeText(Main.this,  question.getA(), Toast.LENGTH_SHORT).show();
-            }
-*/
         }
     }
 

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.erwin.historygo.R;
 import com.erwin.historygo.adapters.PlaceAdapter;
@@ -46,7 +45,7 @@ public class PlacesList extends AppCompatActivity {
         this.listView = (ListView) findViewById(R.id.listView);
 
         this.listView.setAdapter(adapter);
-        new task().execute();
+        new fetchPlacesTask().execute();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,7 +70,7 @@ public class PlacesList extends AppCompatActivity {
 
 
 
-        public class task extends android.os.AsyncTask<String, String, String> {
+        public class fetchPlacesTask extends android.os.AsyncTask<String, String, String> {
 
 
             public String value;
@@ -83,7 +82,6 @@ public class PlacesList extends AppCompatActivity {
             @Override
             protected void onPreExecute(){
                 super.onPreExecute();
-                Toast.makeText(PlacesList.this, "Fetching places' data from server...", Toast.LENGTH_SHORT ).show();
 
                 ProgressBar progressBar = new ProgressBar(PlacesList.this);
                 progressBar.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -125,12 +123,9 @@ public class PlacesList extends AppCompatActivity {
                         String placeName =  placeObj.getString("name");
                         int points = placeObj.getInt("points");
                         String description = placeObj.getString("description");
-                      //  double rating = placeObj.getDouble("rating");
                         int year = placeObj.getInt("year");
 
-                        places.addPlace(new PlaceModel(placeName, points, description,
-                                //country,
-                                 year));
+                        places.addPlace(new PlaceModel(placeName, points, description, year));
                     }
                 }
                 catch (Exception ex){

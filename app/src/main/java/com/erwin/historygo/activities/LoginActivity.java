@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.app_server) +"/registration"));
                 startActivity(browserIntent);
 
@@ -55,20 +56,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = etUsername.getText().toString();
                 password = etPassword.getText().toString();
-                new LoginTask().execute();
+                if (!email.isEmpty() && !password.isEmpty())
+                    new LoginTask().execute();
             }
         });
     }
 
 
     public class LoginTask extends android.os.AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Toast.makeText(LoginActivity.this, "Trying to log in", Toast.LENGTH_SHORT).show();
-
-        }
 
 
         @Override
@@ -112,11 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(LoginActivity.this, Main.class);
                 startActivity(myIntent);
             }
-            else if (value.equals(("DENIED"))){
-                Toast.makeText(LoginActivity.this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
-            }
             else {
-                Toast.makeText(LoginActivity.this, "Cannot establish connection with server.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Cannot log in, please check your credentials", Toast.LENGTH_LONG).show();
             }
 
         }
